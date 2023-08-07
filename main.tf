@@ -30,6 +30,11 @@ resource "google_compute_instance" "cluster_worker_tags" {
   zone         = "us-central1-a"          # Replace with your desired zone
   machine_type = "n1-standard-2"          # Replace with your desired machine type
   tags         = ["web", "api"]           # Specify the desired tags for the worker nodes
+
+  network_interface {
+    # You can specify the network and subnetwork if you want to use custom ones.
+    # If not specified, it will use the default network and subnetwork.
+  }
 }
 
 # Output the kubeconfig for kubectl to use
