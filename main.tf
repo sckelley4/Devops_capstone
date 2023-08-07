@@ -45,17 +45,12 @@ resource "google_compute_instance" "cluster_worker_tags" {
   }
 }
 
-# Store the kubeconfig in a local variable
-locals {
-  kubeconfig_content = google_container_cluster.my_cluster.master_auth[0].kubeconfig
+# Use the "external" data source to fetch kubeconfig
+data "external" "kubeconfig" {
+  program = ["sh", "-c", "gcloud container clusters get-credentials my-gke-cluster --region=us-central1 --project=your-gcp-project-id && kubectl config view --raw --minify --flatten"]
 }
 
 # Output the kubeconfig for kubectl to use
 output "kubeconfig" {
-  value = local.kubeconfig_content
+  value = data.external.kubeconfig.result
 }
-
-
-
-
-
