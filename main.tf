@@ -9,7 +9,7 @@ provider "google" {
 resource "google_container_cluster" "my_cluster" {
   name               = "my-gke-cluster"
   location           = "us-west1"   # Replace with your desired region
-  initial_node_count = 3               # Number of initial nodes in the cluster
+  initial_node_count = 2               # Number of initial nodes in the cluster
 
   node_config {
     machine_type = "n1-standard-1"     # Replace with your desired machine type
