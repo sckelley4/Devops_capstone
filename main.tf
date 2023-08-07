@@ -6,21 +6,15 @@ provider "google" {
 }
 
 # Define the Kubernetes Engine cluster
+
 resource "google_container_cluster" "my_cluster" {
   name               = "my-gke-cluster"
   location           = "us-central1"   # Replace with your desired region
   initial_node_count = 3               # Number of initial nodes in the cluster
 
-  node_config {
+    node_config {
     machine_type = "n1-standard-2"     # Replace with your desired machine type
     disk_size_gb = 30                  # Replace with your desired node disk size (in GB)
-  }
-
-resource "google_container_cluster" "my_cluster" {
-  # ... (other configurations for the cluster)
-
-  node_config {
-    # ... (node configuration settings)
   }
 }
 
