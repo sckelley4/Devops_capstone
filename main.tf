@@ -4,6 +4,7 @@ provider "google" {
   project     = "devsecop-captsone"
   region      = "us-central1"   # Replace with your desired region
 }
+
 # Define the Kubernetes Engine cluster
 resource "google_container_cluster" "my_cluster" {
   name               = "my-gke-cluster"
@@ -44,7 +45,17 @@ resource "google_compute_instance" "cluster_worker_tags" {
   }
 }
 
+# Store the kubeconfig in a local variable
+locals {
+  kubeconfig_content = google_container_cluster.my_cluster.master_auth[0].kubeconfig
+}
+
 # Output the kubeconfig for kubectl to use
 output "kubeconfig" {
-  value = google_container_cluster.my_cluster.master_auth[0].kubeconfig
+  value = local.kubeconfig_content
 }
+
+
+
+
+
