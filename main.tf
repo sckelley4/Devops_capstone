@@ -35,6 +35,14 @@ resource "google_compute_instance" "cluster_worker_tags" {
     # You can specify the network and subnetwork if you want to use custom ones.
     # If not specified, it will use the default network and subnetwork.
   }
+
+  boot_disk {
+    auto_delete = true
+    initialize_params {
+      size = 30  # Replace with the desired size of the boot disk (in GB)
+      # You can specify other disk initialization parameters here if needed.
+    }
+  }
 }
 
 # Output the kubeconfig for kubectl to use
