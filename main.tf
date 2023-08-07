@@ -5,7 +5,7 @@ provider "google" {
   region      = "us-central1"   # Replace with your desired region
 }
 
-# Define the Kubernetes Engine cluster
+#  Define the Kubernetes Engine cluster
 resource "google_container_cluster" "my_cluster" {
   name               = "my-gke-cluster"
   location           = "us-central1"   # Replace with your desired region
@@ -45,7 +45,14 @@ resource "google_compute_instance" "cluster_worker_tags" {
   }
 }
 
+# Data source to fetch kubeconfig
+data "google_container_cluster" "my_cluster_data" {
+  name     = google_container_cluster.my_cluster.name
+  project  = "your-gcp-project-id"  # Replace with your GCP project ID
+  location = "us-central1"          # Replace with your desired region
+}
+
 # Output the kubeconfig for kubectl to use
 output "kubeconfig" {
-  value = google_container_cluster.my_cluster.master_auth[0].kubeconfig
+  value = data.google_container_cluster.my_cluster_data.master_auth[0].kubeconfig
 }
