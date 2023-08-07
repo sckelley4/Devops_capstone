@@ -25,7 +25,7 @@ resource "google_container_cluster" "my_cluster" {
 # Define tags for the worker nodes
 resource "google_compute_instance" "cluster_worker_tags" {
   count        = google_container_cluster.my_cluster.initial_node_count
-  project      = "your-gcp-project-id"    # Replace with your GCP project ID
+  project      = "devsecop-captsone"    # Replace with your GCP project ID
   name         = "node-${count.index + 1}"  # Generate unique names for the instances
   zone         = "us-central1-a"          # Replace with your desired zone
   machine_type = "n1-standard-2"          # Replace with your desired machine type
@@ -45,12 +45,24 @@ resource "google_compute_instance" "cluster_worker_tags" {
   }
 }
 
-# Use the "external" data source to fetch kubeconfig
-data "external" "kubeconfig" {
-  program = ["sh", "-c", "gcloud container clusters get-credentials my-gke-cluster --region=us-central1 --project=devsecop-captsone && kubectl config view --raw --minify --flatten"]
-}
-
 # Output the kubeconfig for kubectl to use
 output "kubeconfig" {
-  value = data.external.kubeconfig.result
+  value = google_container_cluster.my_cluster.master_auth[0].kubeconfig
+}
+
+# Provisioner to fetch kubeconfig and save it locally
+resource "null_resource" "get_kubeconfig" {
+  provisioner "local-exec" {
+    command = "gcloud container clusters get-credentials my-gke-cluster --region=us-central1 --project=devsecop-captsone && kubectl config view --raw --minify --flatten > kubeconfig.txt"
+  }
+}
+
+# Data source to read the kubeconfig from the file
+data "local_file" "kubeconfig" {
+  filename = "kubeconfig.txt"
+}
+
+# Output the content of the kubeconfig
+output "kubeconfig_content" {
+  value = data.local_file.kubeconfig.content
 }
