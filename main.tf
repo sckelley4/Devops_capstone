@@ -16,17 +16,33 @@ resource "google_container_cluster" "my_cluster" {
     disk_size_gb = 30                  # Replace with your desired node disk size (in GB)
   }
 
-  # Optional: Enable autoscaling
-  autoscaling {
-    min_node_count = 3                 # Minimum number of nodes in the cluster
-    max_node_count = 5                 # Maximum number of nodes in the cluster
-  }
+resource "google_container_cluster" "my_cluster" {
+  # ... (other configurations for the cluster)
 
-  # Optional: Add labels to the cluster (if needed)
-  labels = {
+  node_config {
+    # ... (node configuration settings)
+  }
+}
+
+resource "google_container_node_pool" "my_node_pool" {
+  name       = "my-node-pool"
+  cluster    = google_container_cluster.my_cluster.name
+  node_count = 3
+  autoscaling {
+    min_node_count = 3
+    max_node_count = 5
+  }
+}
+
+resource "google_container_cluster" "my_cluster" {
+  # ... (other configurations for the cluster)
+
+  resource_labels = {
     env = "dev"
   }
 
+  tags = ["web", "api"]
+}
   # Optional: Add tags to the cluster (if needed)
   tags = ["web", "api"]
 
@@ -46,6 +62,29 @@ resource "google_container_cluster" "my_cluster" {
   #   name = "KubernetesDashboard"
   #   enabled = true
   # }
+}
+
+resource "google_compute_target_http_proxy" "my_proxy" {
+  name    = "my-http-proxy"
+  url_map = google_compute_url_map.my_url_map.self_link
+}
+
+resource "google_compute_url_map" "my_url_map" {
+  name = "my-url-map"
+
+  default_route_action {
+    url_redirect {
+      https_redirect = true
+      strip_query    = true
+    }
+  }
+}
+
+resource "google_compute_global_forwarding_rule" "my_forwarding_rule" {
+  name                  = "my-forwarding-rule"
+  target                = google_compute_target_http_proxy.my_proxy.self_link
+  port_range            = "80"
+  load_balancing_scheme = "EXTERNAL"
 }
 
 # Output the kubeconfig for kubectl to use
