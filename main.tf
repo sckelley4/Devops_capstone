@@ -45,19 +45,19 @@ resource "google_compute_instance" "cluster_worker_tags" {
   }
 }
 
-# Output the kubeconfig for kubectl to use
-output "kubeconfig" {
-  value = google_container_cluster.my_cluster.master_auth[0].kubeconfig
-}
-
 # Provisioner to fetch kubeconfig and save it locally
 resource "null_resource" "get_kubeconfig" {
   provisioner "local-exec" {
-    command = "gcloud container clusters get-credentials my-gke-cluster --region=us-central1 --project=devsecop-captsone && kubectl config view --raw --minify --flatten > kubeconfig.txt"
+    command = "gcloud container clusters get-credentials my-gke-cluster --region=us-central1 --project=devsecop-captsone"
   }
 }
 
-# Data source to read the kubeconfig from the file
+# Output the kubeconfig file path
+output "kubeconfig_file_path" {
+  value = "kubeconfig.txt"
+}
+
+# Use the local_file data source to read the kubeconfig from the file
 data "local_file" "kubeconfig" {
   filename = "kubeconfig.txt"
 }
