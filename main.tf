@@ -47,5 +47,5 @@ resource "google_compute_instance" "cluster_worker_tags" {
 
 # Output the kubeconfig for kubectl to use
 output "kubeconfig" {
-  value = google_container_cluster.my_cluster.master_auth[0].kubeconfig
+  value = google_container_cluster.my_cluster.master_auth[0].kube_config[0].content
 }
