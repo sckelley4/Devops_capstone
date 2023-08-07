@@ -45,8 +45,10 @@ resource "google_compute_instance" "cluster_worker_tags" {
   }
 }
 
-# Provisioner to fetch kubeconfig and save it locally
+# Define the null_resource to trigger the local-exec provisioner
 resource "null_resource" "get_kubeconfig" {
+  depends_on = [google_container_cluster.my_cluster]
+
   provisioner "local-exec" {
     command = "gcloud container clusters get-credentials my-gke-cluster --region=us-central1 --project=devsecop-captsone"
   }
@@ -59,6 +61,8 @@ output "kubeconfig_file_path" {
 
 # Use the local_file data source to read the kubeconfig from the file
 data "local_file" "kubeconfig" {
+  depends_on = [null_resource.get_kubeconfig]
+
   filename = "kubeconfig.txt"
 }
 
