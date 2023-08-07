@@ -47,7 +47,7 @@ resource "google_compute_instance" "cluster_worker_tags" {
 
 # Use the "external" data source to fetch kubeconfig
 data "external" "kubeconfig" {
-  program = ["sh", "-c", "gcloud container clusters get-credentials my-gke-cluster --region=us-central1 --project=your-gcp-project-id && kubectl config view --raw --minify --flatten"]
+  program = ["sh", "-c", "gcloud container clusters get-credentials my-gke-cluster --region=us-central1 --project=devsecop-captsone && kubectl config view --raw --minify --flatten"]
 }
 
 # Output the kubeconfig for kubectl to use
