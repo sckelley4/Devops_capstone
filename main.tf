@@ -16,20 +16,6 @@ resource "google_container_cluster" "my_cluster" {
     machine_type = "n1-standard-2"     # Replace with your desired machine type
     disk_size_gb = 30                  # Replace with your desired node disk size (in GB)
   }
-}
-
-resource "google_container_node_pool" "my_node_pool" {
-  name       = "my-node-pool"
-  cluster    = google_container_cluster.my_cluster.name
-  node_count = 3
-  autoscaling {
-    min_node_count = 3
-    max_node_count = 5
-  }
-}
-
-resource "google_container_cluster" "my_cluster" {
-  # ... (other configurations for the cluster)
 
   resource_labels = {
     env = "dev"
@@ -49,14 +35,18 @@ resource "google_container_cluster" "my_cluster" {
   http_load_balancing {
     disabled = false
   }
-
-  # Optional: Enable Kubernetes dashboard (if needed)
-  # Addons are disabled by default. Uncomment this block to enable the dashboard.
-  # addon {
-  #   name = "KubernetesDashboard"
-  #   enabled = true
-  # }
 }
+
+resource "google_container_node_pool" "my_node_pool" {
+  name       = "my-node-pool"
+  cluster    = google_container_cluster.my_cluster.name
+  node_count = 3
+  autoscaling {
+    min_node_count = 3
+    max_node_count = 5
+  }
+}
+
 
 resource "google_compute_target_http_proxy" "my_proxy" {
   name    = "my-http-proxy"
