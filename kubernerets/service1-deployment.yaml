@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: service1
-          image: your-dockerhub-username/service1:latest
+          image: sckelley/service1:latest
           ports:
             - containerPort: 80
