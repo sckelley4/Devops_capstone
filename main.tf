@@ -12,7 +12,7 @@ resource "google_container_cluster" "my_cluster" {
   initial_node_count = 2               # Number of initial nodes in the cluster
 
   node_config {
-    machine_type = "n1-west4"     # Replace with your desired machine type
+    machine_type = "n1-standard-1"     # Replace with your desired machine type
     disk_size_gb = 30                  # Replace with your desired node disk size (in GB)
   }
 
@@ -28,7 +28,7 @@ resource "google_compute_instance" "cluster_worker_tags" {
   project      = "devsecop-captsone"    # Replace with your GCP project ID
   name         = "node-${count.index + 1}"  # Generate unique names for the instances
   zone         = "us-west4-a"          # Replace with your desired zone
-  machine_type = "n1-standard-2"          # Replace with your desired machine type
+  machine_type = "n1-standard-1"          # Replace with your desired machine type
   tags         = ["web", "api"]           # Specify the desired tags for the worker nodes
 
   network_interface {
