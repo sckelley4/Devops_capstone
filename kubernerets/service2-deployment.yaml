@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: service1-deployment
+  name: service2-deployment
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: service1
+      app: service2
   template:
     metadata:
       labels:
-        app: service1
+        app: service2
     spec:
       containers:
-        - name: service1
-          image: sckelley/service1:latest
+        - name: service2
+          image: your-dockerhub-username/service2:latest
           ports:
             - containerPort: 80
