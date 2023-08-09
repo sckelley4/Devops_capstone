@@ -7,9 +7,10 @@ pipeline {
     }
 
     stages {
-        stage('Build and Test') {
+        stage('Clone, Build and Test') {
             steps {
                 script {
+                    checkout scm
                     // Use the credentials in your script
                     withCredentials([usernamePassword(credentialsId: DOCKER_HUB_CREDENTIALS, usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
                         sh 'docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD'
