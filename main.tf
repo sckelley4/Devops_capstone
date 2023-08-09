@@ -12,7 +12,7 @@ resource "google_container_cluster" "my_cluster" {
   initial_node_count = 2               # Number of initial nodes in the cluster
 
   node_config {
-    machine_type = "northamerica-northeast1"     # Replace with your desired machine type
+    machine_type = "n1-standard-1"     # Replace with your desired machine type
     disk_size_gb = 30                  # Replace with your desired node disk size (in GB)
   }
 
