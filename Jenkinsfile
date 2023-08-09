@@ -13,10 +13,10 @@ pipeline {
                     // Use the credentials in your script
                     withCredentials([usernamePassword(credentialsId: DOCKER_HUB_CREDENTIALS, usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
                         sh 'docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD'
-                        sh 'docker build -t your-dockerhub-username/service1:${BUILD_NUMBER} ./service1'
-                        sh 'docker build -t your-dockerhub-username/service2:${BUILD_NUMBER} ./service2'
-                        sh 'docker push your-dockerhub-username/service1:${BUILD_NUMBER}'
-                        sh 'docker push your-dockerhub-username/service2:${BUILD_NUMBER}'
+                        sh 'docker build -t sckelley/service1:${BUILD_NUMBER} ./service1'
+                        sh 'docker build -t sckelley/service2:${BUILD_NUMBER} ./service2'
+                        sh 'docker push sckelley/service1:${BUILD_NUMBER}'
+                        sh 'docker push sckelley/service2:${BUILD_NUMBER}'
              }
             }
             }
