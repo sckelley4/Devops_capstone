@@ -2,13 +2,13 @@
 provider "google" {
   credentials = file("/Users/sckelley/Downloads/devsecop-captsone-cf7a1a3762eb.json")
   project     = "devsecop-captsone"
-  region      = "us-central1"   # Replace with your desired region
+  region      = "us-west4"   # Replace with your desired region
 }
 
 # Define the Kubernetes Engine cluster
 resource "google_container_cluster" "my_cluster" {
   name               = "my-gke-cluster"
-  location           = "us-west1"   # Replace with your desired region
+  location           = "us-west4"   # Replace with your desired region
   initial_node_count = 2               # Number of initial nodes in the cluster
 
   node_config {
