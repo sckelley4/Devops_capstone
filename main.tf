@@ -2,13 +2,13 @@
 provider "google" {
   credentials = file("/Users/sckelley/Downloads/devsecop-captsone-cf7a1a3762eb.json")
   project     = "devsecop-captsone"
-  region      = "us-east1"   # Replace with your desired region
+  region      = "us-east5"   # Replace with your desired region
 }
 
 # Define the Kubernetes Engine cluster
 resource "google_container_cluster" "my_cluster" {
   name               = "my-gke-cluster"
-  location           = "us-east1"   # Replace with your desired region
+  location           = "us-east5"   # Replace with your desired region
   initial_node_count = 2               # Number of initial nodes in the cluster
 
   node_config {
@@ -27,7 +27,7 @@ resource "google_compute_instance" "cluster_worker_tags" {
   count        = google_container_cluster.my_cluster.initial_node_count
   project      = "devsecop-captsone"    # Replace with your GCP project ID
   name         = "node-${count.index + 1}"  # Generate unique names for the instances
-  zone         = "us-east1-a"          # Replace with your desired zone
+  zone         = "us-east5-a"          # Replace with your desired zone
   machine_type = "n1-standard-1"          # Replace with your desired machine type
   tags         = ["web", "api"]           # Specify the desired tags for the worker nodes
 
