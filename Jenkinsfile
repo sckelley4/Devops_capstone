@@ -34,7 +34,18 @@ pipeline {
                 }
             }
         }
-
+        
+        stage('Code Quality Analysis') {
+            steps {
+                script {
+                    def scannerHome = tool name: 'SonarQubeScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                    withSonarQubeEnv('SonarQubeScanner') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
+            }
+        }
+        
         stage('Deploy to Kubernetes') {
             steps {
                 script {
