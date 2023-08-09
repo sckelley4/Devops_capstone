@@ -7,7 +7,7 @@ pipeline {
     }
 
     stages {
-        stage('Build and Deploy') {
+        stage('Build and Test') {
             steps {
                 script {
                     // Use the credentials in your script
@@ -15,14 +15,25 @@ pipeline {
                         sh 'docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD'
                         sh 'docker build -t sckelley/service1:${BUILD_NUMBER} ./service1'
                         sh 'docker build -t sckelley/service2:${BUILD_NUMBER} ./service2'
-                        sh 'docker push sckelley/service1:${BUILD_NUMBER}'
-                        sh 'docker push sckelley/service2:${BUILD_NUMBER}'
-             }
-            }
+
+                        // Run automated tests for the microservices
+                        sh 'docker run sckelley/service1:${BUILD_NUMBER} npm test'
+                        sh 'docker run sckelley/service2:${BUILD_NUMBER} pytest'
+                    }
+                }
             }
         }
-        // ...
-    }
+
+        stage('Deploy to Docker Hub') {
+            steps {
+                script {
+                    // Push the Docker images to Docker Hub
+                    sh 'docker push sckelley/service1:${BUILD_NUMBER}'
+                    sh 'docker push sckelley/service2:${BUILD_NUMBER}'
+                }
+            }
+        }
+
         stage('Deploy to Kubernetes') {
             steps {
                 script {
