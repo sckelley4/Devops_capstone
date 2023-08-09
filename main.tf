@@ -2,7 +2,7 @@
 provider "google" {
   credentials = file("/Users/sckelley/Downloads/devsecop-captsone-cf7a1a3762eb.json")
   project     = "devsecop-captsone"
-  region      = "us-west4"   # Replace with your desired region
+  region      = "us-west1"   # Replace with your desired region
 }
 
 # Define the Kubernetes Engine cluster
