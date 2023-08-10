@@ -1,11 +1,11 @@
-# Define the Google Cloud provider
+# Google Cloud provider
 provider "google" {
   credentials = file("/Users/sckelley/Downloads/devsecop-captsone-cf7a1a3762eb.json")
   project     = "devsecop-captsone"
   region      = "us-south1"   # Replace with your desired region
 }
 
-# Define the Kubernetes Engine cluster
+# Kubernetes Engine cluster
 resource "google_container_cluster" "my_cluster" {
   name               = "my-gke-cluster"
   location           = "us-south1"   # Replace with your desired region
@@ -22,7 +22,7 @@ resource "google_container_cluster" "my_cluster" {
   }
 }
 
-# Define tags for the worker nodes
+# tags for the worker nodes
 resource "google_compute_instance" "cluster_worker_tags" {
   count        = google_container_cluster.my_cluster.initial_node_count
   project      = "devsecop-captsone"    # Replace with your GCP project ID
@@ -45,7 +45,7 @@ resource "google_compute_instance" "cluster_worker_tags" {
   }
 }
 
-# Define the null_resource to trigger the local-exec provisioner
+# null_resource to trigger the local-exec provisioner
 resource "null_resource" "get_kubeconfig" {
   depends_on = [google_container_cluster.my_cluster]
 
@@ -59,7 +59,7 @@ output "kubeconfig_file_path" {
   value = "kubeconfig.txt"
 }
 
-# Use the local_file data source to read the kubeconfig from the file
+# local_file data source to read the kubeconfig from the file
 data "local_file" "kubeconfig" {
   depends_on = [null_resource.get_kubeconfig]
 
