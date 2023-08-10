@@ -27,7 +27,7 @@ resource "google_compute_instance" "cluster_worker_tags" {
   count        = google_container_cluster.my_cluster.initial_node_count
   project      = "devsecop-captsone"    # Replace with GCP project ID
   name         = "node-${count.index + 1}"  # Generate unique names for the instances
-  zone         = "nus-south1-a"          # Replace with desired zone
+  zone         = "us-south1-a"          # Replace with desired zone
   machine_type = "n1-standard-1"          # Replace with desired machine type
   tags         = ["web", "api"]           # Specify the desired tags for the worker nodes
 
