@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // Use the credential ID to retrieve Docker Hub credentials
+        // credential ID to retrieve Docker Hub credentials
         DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')
     }
 
@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     checkout scm
-                    // Use the credentials in your script
+                    // Use the credentials in script
                     withCredentials([usernamePassword(credentialsId: DOCKER_HUB_CREDENTIALS, usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
                         sh 'docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD'
                         sh 'docker build -t sckelley/service1:${BUILD_NUMBER} ./service1'
